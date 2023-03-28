@@ -44,4 +44,14 @@ routerOrders.put("/orders/:id", async (req, res) =>{
     }
 })
 
+routerOrders.delete("/orders/:id", async (req, res) => {
+    const {id} = req.params;
+    try {
+        const {rows} = await pool.query("DELETE FROM orders WHERE id=$1" , [id]);
+        res.json(`The order with the id: ${id} has been deleted`);
+    } catch (error) {
+        res.sendStatus(403);
+    }
+})
+
 module.exports = routerOrders;
