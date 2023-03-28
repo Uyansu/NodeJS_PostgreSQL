@@ -23,4 +23,14 @@ routerOrders.get("/orders/:id", async (req, res) => {
     }
 })
 
+routerOrders.post("/orders", async (req, res) => {
+    const {price , date, user_id} = req.body;
+    try {
+        const {rows} = await pool.query("INSERT INTO orders (price, date, user_id) VALUES ($1, $2, $3) RETURNING *", [price, date, user_id]);
+        res.json({data: rows});
+        } catch (error) {
+        res.sendStatus(403);
+    }
+})
+
 module.exports = routerOrders;
