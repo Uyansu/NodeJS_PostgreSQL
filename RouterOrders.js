@@ -33,4 +33,15 @@ routerOrders.post("/orders", async (req, res) => {
     }
 })
 
+routerOrders.put("/orders/:id", async (req, res) =>{
+    const {id} = req.params;
+    const {price} = req.body;
+    try {
+        const {rows} = await pool.query("UPDATE orders SET price=$1 WHERE id=$2 RETURNING *", [price, id]);
+        res.json({data:rows});
+    } catch (error) {
+        res.sendStatus(403);
+    }
+})
+
 module.exports = routerOrders;
