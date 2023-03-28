@@ -33,4 +33,19 @@ router.post("/users", async (req, res) => {
     }
 });
 
+
+router.put("/users/:id", async (req, res) => {
+    const {id} = req.params;
+    const {first_name} = req.body;
+    try {
+        const {rows} = await pool.query("UPDATE users SET first_name=$1 WHERE id =$2 RETURNING *", [first_name, id]);
+        res.json({data: rows});
+    } catch (error) {
+        res.sendStatus(403);
+    }
+})
+
+
+
+
 module.exports = router;
