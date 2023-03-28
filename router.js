@@ -22,4 +22,15 @@ router.get("/users/:id", async (req, res) => {
     }
 });
 
+router.post("/users", async (req, res) => {
+    const { first_name, last_name, age } = req.body;
+    try {
+        const { rows } = await pool.query(
+        "INSERT INTO users (first_name, last_name, age) VALUES ($1, $2, $3) RETURNING *",[first_name, last_name, age]);
+        res.json({ data: rows });
+    } catch (e) {
+        res.sendStatus(403);
+    }
+});
+
 module.exports = router;
